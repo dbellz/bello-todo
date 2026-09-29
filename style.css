@@ -1,0 +1,45 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: Arial, sans-serif; background: #f4f7fb;
+  color: #172033;
+}
+.app { width: min(920px, 92%); margin: 40px auto; }
+header { display:flex; justify-content:space-between; gap:20px; align-items:center; margin-bottom:25px; }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); margin: 5px 0; }
+h2 { margin-top:0; }
+.subtitle { color:#667085; margin:0; }
+.eyebrow { color:#5b5bd6; font-weight:700; font-size:.75rem; letter-spacing:1.5px; margin:0; }
+.stats { background:#fff; padding:15px 22px; border-radius:16px; box-shadow:0 5px 20px #0000000d; text-align:center; }
+.stats strong { display:block; font-size:1.6rem; }
+.stats span { color:#667085; font-size:.85rem; }
+.card { background:#fff; padding:24px; border-radius:18px; box-shadow:0 5px 20px #0000000d; margin-bottom:20px; }
+.task-form { display:flex; gap:10px; }
+input, textarea { width:100%; border:1px solid #d8dee9; border-radius:10px; padding:13px; font:inherit; outline:none; }
+input:focus, textarea:focus { border-color:#5b5bd6; }
+button { border:0; border-radius:10px; padding:12px 17px; background:#5b5bd6; color:white; font-weight:700; cursor:pointer; }
+button:hover { opacity:.9; }
+.toolbar { display:flex; justify-content:space-between; gap:15px; margin:20px 0; }
+.toolbar input { max-width:350px; }
+.filters { display:flex; gap:7px; }
+.filter { background:#e8eafc; color:#4a4ab2; }
+.filter.active { background:#5b5bd6; color:white; }
+.task-list { display:grid; gap:10px; margin-bottom:25px; }
+.task { background:#fff; border-radius:14px; padding:16px; display:flex; align-items:center; gap:12px; box-shadow:0 4px 15px #00000009; }
+.task.done .task-text { text-decoration:line-through; color:#98a2b3; }
+.check { width:20px; height:20px; accent-color:#5b5bd6; }
+.task-text { flex:1; }
+.delete { background:#fee4e2; color:#b42318; padding:8px 11px; }
+.note-form { display:grid; gap:10px; }
+.notes-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:18px; }
+.note { background:#fff8d9; border-radius:14px; padding:17px; position:relative; border:1px solid #f2e6a7; }
+.note h3 { margin:0 0 8px; }
+.note p { white-space:pre-wrap; color:#475467; margin:0 0 14px; }
+.note .delete { float:right; }
+.empty { text-align:center; color:#98a2b3; padding:30px; }
+footer { text-align:center; color:#98a2b3; margin:25px 0; font-size:.9rem; }
+@media (max-width:650px) {
+  header, .toolbar { flex-direction:column; align-items:stretch; }
+  .toolbar input { max-width:none; }
+  .task-form { flex-direction:column; }
+  .filters { justify-content:center; }
+}

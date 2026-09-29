@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskNest - To-Do & Notes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <p class="eyebrow">PRODUCTIVITY APP</p>
+        <h1>TaskNest</h1>
+        <p class="subtitle">Organize your tasks and keep useful notes in one place.</p>
+      </div>
+      <div class="stats">
+        <strong id="taskCount">0</strong>
+        <span>tasks</span>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Add a task</h2>
+      <form id="taskForm" class="task-form">
+        <input id="taskInput" type="text" placeholder="e.g. Finish assignment" maxlength="100" required>
+        <button type="submit">Add Task</button>
+      </form>
+    </section>
+
+    <section class="toolbar">
+      <input id="searchInput" type="search" placeholder="Search tasks...">
+      <div class="filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="pending">Pending</button>
+        <button class="filter" data-filter="completed">Completed</button>
+      </div>
+    </section>
+
+    <section id="taskList" class="task-list"></section>
+
+    <section class="card notes-card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">NOTES FEATURE</p>
+          <h2>Quick Notes</h2>
+        </div>
+      </div>
+      <form id="noteForm">
+        <input id="noteTitle" type="text" placeholder="Note title" maxlength="60" required>
+        <textarea id="noteText" placeholder="Write your note here..." maxlength="500" required></textarea>
+        <button type="submit">Save Note</button>
+      </form>
+      <div id="notesList" class="notes-list"></div>
+    </section>
+
+    <footer>TaskNest saves your tasks and notes in your browser.</footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
