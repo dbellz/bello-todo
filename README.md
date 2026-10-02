@@ -13,3 +13,10 @@ Payments: Paystack and Flutterwave, both handled in Edge Functions (`pay` starts
 
 ## Links
 The to-do app (`index.html`) and the shop (`shop/index.html`) are separate projects; keep them separate. The to-do page links to the shop at `shop/index.html`.
+
+## GitHub Pages
+A workflow (`.github/workflows/pages.yml`) deploys on push to `main`. Enable it once under Settings > Pages > Source: "GitHub Actions". Then:
+- To-do app: https://dbellz.github.io/bello-todo/
+- Shop: https://dbellz.github.io/bello-todo/shop/
+
+Add the Pages URL to the Supabase Auth redirect allow list for Google sign-in.
