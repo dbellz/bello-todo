@@ -6,7 +6,7 @@ Setup:
 1. Create a Supabase project; run `supabase/schema.sql`.
 2. In Google Cloud Console create an OAuth client (Web); add Supabase's callback URL (`https://<ref>.supabase.co/auth/v1/callback`) as redirect URI. Enable Google under Supabase Auth > Providers with the client ID/secret, and add your site URL to the redirect allow list.
 3. Put your URL and anon key in `shop/config.js`.
-4. Deploy the function and set Mailgun secrets (see header of `supabase/functions/send-order-email/index.ts`).
+4. Deploy the functions and set secrets (see Payments below).
 5. Serve `shop/` with any static server.
 
-Payment: orders are saved as `pending_payment`. No payment provider was specified, so none is wired in; integrate e.g. Stripe Checkout in an Edge Function and mark orders paid server-side (prices should also be verified server-side).
+Payments: Paystack and Flutterwave, both handled in Edge Functions (`pay` starts the payment with totals recomputed from the `products` table; `verify-payment` confirms with the provider, marks the order `paid` and sends the Mailgun email). Deploy with `supabase functions deploy pay verify-payment` and set secrets `PAYSTACK_SECRET_KEY`, `FLUTTERWAVE_SECRET_KEY`, `PAYMENT_CURRENCY` (default `NGN`), `MAILGUN_API_KEY`, `MAILGUN_DOMAIN`, `MAILGUN_FROM`. Prices in `shop/shop.js` are display-only; keep them in sync with the `products` table.

@@ -76,7 +76,7 @@ function renderCart() {
   document.getElementById("total").textContent = money(cartTotal());
 }
 
-async function placeOrder(form, session) {
+async function placeOrder(form, session, provider) {
   const msg = document.getElementById("msg");
   const lines = cartLines();
   if (!lines.length) { msg.textContent = "Cart is empty."; return; }
@@ -95,13 +95,24 @@ async function placeOrder(form, session) {
   msg.textContent = "Placing order…";
   const { data, error } = await sb.from("orders").insert(order).select("id").single();
   if (error) { msg.textContent = "Error: " + error.message; return; }
-  // Payment + confirmation email are completed server-side (see README).
-  const { error: fnErr } = await sb.functions.invoke("send-order-email", { body: { order_id: data.id } });
-  saveCart([]);
-  renderCart();
-  msg.textContent = fnErr
-    ? `Order ${data.id} saved, but the confirmation email failed.`
-    : `Thank you! Order ${data.id} placed. A confirmation email is on its way.`;
+  const { data: pay, error: payErr } = await sb.functions.invoke("pay", {
+    body: { order_id: data.id, provider, return_url: location.origin + location.pathname }
+  });
+  if (payErr || !pay?.link) { msg.textContent = "Could not start payment. Please try again."; return; }
+  location.href = pay.link;
+}
+
+async function confirmReturn(orderId) {
+  const msg = document.getElementById("msg");
+  msg.textContent = "Confirming payment…";
+  const { data, error } = await sb.functions.invoke("verify-payment", { body: { order_id: orderId } });
+  if (!error && data?.status === "paid") {
+    saveCart([]);
+    renderCart();
+    msg.textContent = `Thank you! Order ${orderId} is paid. A confirmation email is on its way.`;
+  } else {
+    msg.textContent = "Payment not confirmed. If you were charged, contact support with order " + orderId;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -113,6 +124,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   if (document.getElementById("checkoutForm")) {
     renderCart();
-    document.getElementById("checkoutForm").onsubmit = e => { e.preventDefault(); placeOrder(e.target, session); };
+    const form = document.getElementById("checkoutForm");
+    form.onsubmit = e => e.preventDefault();
+    form.querySelectorAll("[data-provider]").forEach(b => b.onclick = () => form.reportValidity() && placeOrder(form, session, b.dataset.provider));
+    const orderId = new URLSearchParams(location.search).get("order");
+    if (orderId && session) confirmReturn(orderId);
   }
 });
